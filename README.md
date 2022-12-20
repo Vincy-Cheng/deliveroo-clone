@@ -1,6 +1,6 @@
 # Deliveroo clone
 
-Use React Native, Tailwind CSS, Sanity, and Expo to build. Refer to [Sonny Sangha](https://www.youtube.com/watch?v=AkEnidfZnCU) video
+Use React Native, Tailwind CSS, Sanity, and Expo to build. Refer to [Sonny Sangha](https://www.youtube.com/watch?v=AkEnidfZnCU) video in YouTube.
 
 ## Local development
 
