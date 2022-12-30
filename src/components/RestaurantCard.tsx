@@ -3,15 +3,25 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { urlFor } from '../../sanity';
-type RestaurantCardProps = {
-  id: number;
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../App';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { IDish } from '../types';
+
+type RestaurantScreenProp = StackNavigationProp<
+  RootStackParamList,
+  'Restaurant'
+>;
+
+export type RestaurantCardProps = {
+  id: string;
   imgUrl: string;
   title: string;
   rating: number;
-  genre: string;
+  genre: string | undefined;
   address: string;
   short_description: string;
-  dishes: [];
+  dishes: IDish[];
   long: number;
   lat: number;
 };
@@ -28,8 +38,26 @@ const RestaurantCard = ({
   lat,
   long
 }: RestaurantCardProps) => {
+  const navigation = useNavigation<RestaurantScreenProp>();
+
   return (
-    <TouchableOpacity className="bg-white mr-3 shadow">
+    <TouchableOpacity
+      className="bg-white mr-3 shadow"
+      onPress={() => {
+        navigation.navigate('Restaurant', {
+          id,
+          imgUrl,
+          title,
+          rating,
+          genre,
+          address,
+          short_description,
+          dishes,
+          lat,
+          long
+        });
+      }}
+    >
       <Image
         source={{ uri: urlFor(imgUrl).url() }}
         className="h-36 w-64 rounded-sm "
@@ -37,12 +65,7 @@ const RestaurantCard = ({
       <View className="px-3 pb-4">
         <Text className="font-bold text-lg pt-2">{title}</Text>
         <View className="flex-row items-center space-x-1">
-          <FontAwesome
-            name="star"
-            color="#008000"
-            size={15}
-            className="opacity-50"
-          />
+          <FontAwesome name="star" color="#00800080" size={15} />
           <Text className="text-xs text-gray-500">
             <Text className="text-green-500">{rating}</Text> • {genre}
           </Text>
@@ -51,8 +74,8 @@ const RestaurantCard = ({
           <Entypo
             name="location"
             size={15}
-            color="#808080"
-            className="opacity-40"
+            color="#80808066"
+            // className="opacity-40"
           />
           <Text className="text-xs text-gray-500">Nearby • {address}</Text>
         </View>

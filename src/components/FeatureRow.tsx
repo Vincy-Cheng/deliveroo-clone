@@ -2,15 +2,16 @@ import { View, Text, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import RestaurantCard from './RestaurantCard';
-import sanityClient from '../../sanity';
+import sanityClient, { urlFor } from '../../sanity';
+import { IRestaurant } from '../types';
 type FeatureRowProps = {
-  id: number;
+  id: string;
   title: string;
   description: string;
 };
 
 const FeatureRow = ({ id, title, description }: FeatureRowProps) => {
-  const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
   useEffect(() => {
     sanityClient
       .fetch(
@@ -32,7 +33,7 @@ const FeatureRow = ({ id, title, description }: FeatureRowProps) => {
         setRestaurants(data?.restaurants);
       });
   }, []);
-  console.log(restaurants, 'r');
+
   return (
     <View>
       <View className="mt-4 flex-row items-center justify-between px-4">
@@ -47,14 +48,14 @@ const FeatureRow = ({ id, title, description }: FeatureRowProps) => {
         showsHorizontalScrollIndicator={false}
         className="pt-4"
       >
-        {restaurants?.map((restaurant: any) => (
+        {restaurants?.map((restaurant) => (
           <RestaurantCard
             id={restaurant._id}
             key={restaurant._id}
-            imgUrl={restaurant.image}
+            imgUrl={urlFor(restaurant.image).url()}
             title={restaurant.name}
             rating={restaurant.rating}
-            genre={restaurant.type?.name}
+            genre={restaurant.type.name}
             address={restaurant.address}
             short_description={restaurant.short_description}
             dishes={restaurant.dishes}

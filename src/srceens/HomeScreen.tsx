@@ -8,14 +8,17 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Categories from '../components/Categories';
 import FeatureRow from '../components/FeatureRow';
-import sanityClient from '../../sanity'
-import category from '../../sanity/schemas/category';
+import sanityClient from '../../sanity';
+import { IFeaturedCategory } from '../types';
+
 type Props = {};
 
 const HomeScreen = (props: Props) => {
   const navigation = useNavigation();
 
-  const [featuredCategories,setFeaturedCategories] = useState([])
+  const [featuredCategories, setFeaturedCategories] = useState<
+    IFeaturedCategory[]
+  >([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,18 +26,20 @@ const HomeScreen = (props: Props) => {
     });
   }, []);
 
-  useEffect(()=>{
-    sanityClient.fetch(
-      `*[_type =="featured"] {
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        `*[_type =="featured"] {
         ...,
         dishes[]->
       }`
-    ).then((data)=>{
-      setFeaturedCategories(data)
-    })
-  },[])
+      )
+      .then((data) => {
+        setFeaturedCategories(data);
+      });
+  }, []);
 
-  console.log(featuredCategories)
+  // console.log(featuredCategories);
   return (
     <SafeAreaView className="bg-white pt-5 flex-1">
       {/* HomeScreen */}
@@ -72,15 +77,15 @@ const HomeScreen = (props: Props) => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <Categories />
-        {featuredCategories?.map((category:any)=>(
+        {featuredCategories?.map((Fcategory) => (
           <FeatureRow
-          key={category._id}
-          id={category._id}
-          title={category.name}
-          description={category.short_description}
-        />
+            key={Fcategory._id}
+            id={Fcategory._id}
+            title={Fcategory.name}
+            description={Fcategory.short_description}
+          />
         ))}
-        
+
         {/* <FeatureRow
           id={2}
           title={'Tasty Discount'}
