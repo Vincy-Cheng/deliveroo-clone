@@ -1,8 +1,8 @@
 import sanityClient from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
-import 'dotenv/config';
+import Constants from 'expo-constants';
 const client = sanityClient({
-    projectId: process.env.SANITY_PROJECT_ID,
+    projectId: Constants.expoConfig.extra.sanityAPIKey,
     dataset: "production",
     useCdn: true,
     apiVersion: "2021-10-21"
