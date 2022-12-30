@@ -5,6 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/srceens/HomeScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RestaurantScreen from './src/srceens/RestaurantScreen';
+import { RestaurantCardProps } from './src/components/RestaurantCard';
+
+export type RootStackParamList = {
+  Home: any;
+  Restaurant: RestaurantCardProps;
+};
 
 const Stack = createNativeStackNavigator();
 
