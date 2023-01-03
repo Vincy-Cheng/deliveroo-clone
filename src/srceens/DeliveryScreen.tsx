@@ -75,7 +75,7 @@ const DeliveryScreen = (props: Props) => {
           className="h-12 w-12 bg-gray-300 p-4 rounded-full ml-5"
         ></Image>
         <View>
-          <Text className="text-lg">Text</Text>
+          <Text className="text-lg">Deliveroo Clone</Text>
           <Text className="text-gray-400">Your rider</Text>
         </View>
         <Text className="text-[#00CCBB] text-lg mr-5 font-bold">Call</Text>
