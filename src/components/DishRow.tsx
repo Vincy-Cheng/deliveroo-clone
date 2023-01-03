@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { addToBasket, removeFromBasket } from '../store/basketSlice';
 import { useAppSelector } from '../hooks';
+import { format } from '../commons';
 
 export type DishRowProps = {
   id: string;
@@ -35,13 +36,6 @@ const DishRow = ({ id, name, description, price, image }: DishRowProps) => {
     dispatch(removeFromBasket({ id }));
   };
 
-  const format = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'HKD',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
   return (
     <>
       <TouchableOpacity
