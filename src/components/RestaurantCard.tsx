@@ -4,14 +4,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { urlFor } from '../../sanity';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../App';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { IDish } from '../types';
-
-type RestaurantScreenProp = StackNavigationProp<
-  RootStackParamList,
-  'Restaurant'
->;
+import { RestaurantScreenProp } from '../srceens/props';
 
 export type RestaurantCardProps = {
   id: string;

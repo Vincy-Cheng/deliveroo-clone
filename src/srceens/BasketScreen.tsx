@@ -14,6 +14,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { urlFor } from '../../sanity';
 import { DishRowProps } from '../components/DishRow';
+import { format } from '../commons';
+import { removeFromBasket } from '../store/basketSlice';
+import { NavigationScreenProp } from './props';
 
 interface GroupedItems {
   // using array method to group
@@ -21,14 +24,13 @@ interface GroupedItems {
   //   items: DishRowProps[];
   [key: string]: DishRowProps[];
 }
-
 type Props = {};
 
 const BasketScreen = (props: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationScreenProp>();
   const restaurant = useAppSelector((state) => state.restaurant.restaurant);
   const { items } = useAppSelector((state) => state.basket);
-
+  const basketTotal = items.reduce((total, item) => (total += item.price), 0);
   const [groupedItemsInBasket, setGroupedItemsInBasket] =
     useState<GroupedItems>();
 
@@ -57,8 +59,6 @@ const BasketScreen = (props: Props) => {
     }, {});
     setGroupedItemsInBasket(groupedItems);
   }, [items]);
-
-  console.log(groupedItemsInBasket);
 
   return (
     // <SafeAreaView className="flex-1 bg-white">
@@ -89,17 +89,28 @@ const BasketScreen = (props: Props) => {
           <Text className="text-[#00CCBB]">Change</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView className="divide-y divide-gray-200">
         {groupedItemsInBasket &&
           // using Object key
           Object.entries(groupedItemsInBasket).map(([key, items]) => (
-            <View key={key}>
-              <Text>{items.length} x</Text>
+            <View
+              key={key}
+              className="flex-row items-center space-x-3 bg-white py-2 px-5"
+            >
+              <Text className="text-[#00CCBB]">{items.length} x</Text>
               <Image
                 source={{ uri: urlFor(items[0]?.image).url() }}
                 className="h-12 w-12 rounded-full"
               />
               <Text className="flex-1">{items[0]?.name}</Text>
+              <Text>{format(items[0].price)}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(removeFromBasket({ id: key }));
+                }}
+              >
+                <Text className="text-[#00CCBB] text-xs">Remove</Text>
+              </TouchableOpacity>
             </View>
           ))}
         {/*  using array method to group */}
@@ -114,6 +125,33 @@ const BasketScreen = (props: Props) => {
           </View>
         ))} */}
       </ScrollView>
+      <View className="bg-white p-5 pb-10 mt-5 space-y-4">
+        <View className="flex-row justify-between">
+          <Text className="text-gray-400">Subtotal</Text>
+          <Text className="text-gray-400">{format(basketTotal)}</Text>
+        </View>
+
+        <View className="flex-row justify-between">
+          <Text className="text-gray-400">Delivery Fee</Text>
+          <Text className="text-gray-400">{format(5.99)}</Text>
+        </View>
+
+        <View className="flex-row justify-between">
+          <Text>Order Total</Text>
+          <Text className="font-extrabold">{format(basketTotal + 5.99)}</Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('PreparingOrderScreen');
+          }}
+          className="rounded-lg bg-[#00CCBB] p-4"
+        >
+          <Text className="text-center text-white text-lg font-bold">
+            Place Order
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
     // </SafeAreaView>
   );

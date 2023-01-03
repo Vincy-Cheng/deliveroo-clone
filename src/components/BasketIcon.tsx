@@ -3,16 +3,14 @@ import React from 'react';
 import { useAppSelector } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { format } from '../commons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../App';
+import { NavigationScreenProp } from '../srceens/props';
 
 type Props = {};
-type BasketScreenProp = StackNavigationProp<RootStackParamList, 'Basket'>;
 
 const BasketIcon = (props: Props) => {
   const { items } = useAppSelector((state) => state.basket);
   const basketTotal = items.reduce((total, item) => (total += item.price), 0);
-  const navigation = useNavigation<BasketScreenProp>();
+  const navigation = useNavigation<NavigationScreenProp>();
 
   if (items.length === 0) {
     return null;

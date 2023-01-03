@@ -9,14 +9,11 @@ import { RestaurantCardProps } from './src/components/RestaurantCard';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
 import BasketScreen from './src/srceens/BasketScreen';
+import PreparingOrderScreen from './src/srceens/PreparingOrderScreen';
+import DeliveryScreen from './src/srceens/DeliveryScreen';
+import { RootStackParamList } from './src/srceens/props';
 
-export type RootStackParamList = {
-  Home: any;
-  Restaurant: RestaurantCardProps;
-  Basket: any;
-};
-
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -37,6 +34,16 @@ export default function App() {
             name="Basket"
             component={BasketScreen}
             options={{ presentation: 'modal', headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="PreparingOrderScreen"
+            component={PreparingOrderScreen}
+            options={{ presentation: 'fullScreenModal', headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Delivery"
+            component={DeliveryScreen}
+            options={{ presentation: 'fullScreenModal', headerShown: false }}
           ></Stack.Screen>
         </Stack.Navigator>
         <StatusBar style="auto" />
