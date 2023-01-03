@@ -8,10 +8,12 @@ import RestaurantScreen from './src/srceens/RestaurantScreen';
 import { RestaurantCardProps } from './src/components/RestaurantCard';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
+import BasketScreen from './src/srceens/BasketScreen';
 
 export type RootStackParamList = {
   Home: any;
   Restaurant: RestaurantCardProps;
+  Basket: any;
 };
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +32,11 @@ export default function App() {
             name="Restaurant"
             component={RestaurantScreen}
             options={{ title: 'Restaurant' }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Basket"
+            component={BasketScreen}
+            options={{ presentation: 'modal', headerShown: false }}
           ></Stack.Screen>
         </Stack.Navigator>
         <StatusBar style="auto" />
