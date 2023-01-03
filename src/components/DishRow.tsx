@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { urlFor } from '../../sanity';
 import Entypo from 'react-native-vector-icons/Entypo';
 import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
+import { addToBasket, removeFromBasket } from '../store/basketSlice';
+import { useAppSelector } from '../hooks';
 
-type DishRowProps = {
+export type DishRowProps = {
   id: string;
   name: string;
   description: string;
@@ -14,6 +17,23 @@ type DishRowProps = {
 
 const DishRow = ({ id, name, description, price, image }: DishRowProps) => {
   const [isPressed, setIsPressed] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const items = useAppSelector((state) =>
+    state.basket.items.filter((item) => item.id === id)
+  );
+
+  const addItemToBasket = () => {
+    dispatch(addToBasket({ id, name, description, price, image }));
+  };
+
+  const removeItemFromBasket = () => {
+    if (!(items.length > 0)) {
+      return;
+    }
+    dispatch(removeFromBasket({ id }));
+  };
 
   const format = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -50,15 +70,24 @@ const DishRow = ({ id, name, description, price, image }: DishRowProps) => {
       {isPressed && (
         <View className="bg-white px-4">
           <View className="flex-row items-center space-x-2 pb-3">
-            <TouchableOpacity>
+            <TouchableOpacity
+              disabled={!items.length}
+              onPress={() => {
+                removeItemFromBasket();
+              }}
+            >
               <Entypo
                 name="circle-with-minus"
-                color="#00CCBB"
+                color={items.length > 0 ? '#00CCBB' : 'gray'}
                 size={30}
               ></Entypo>
             </TouchableOpacity>
-            <Text>0</Text>
-            <TouchableOpacity>
+            <Text>{items.length}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                addItemToBasket();
+              }}
+            >
               <Entypo
                 name="circle-with-plus"
                 color="#00CCBB"
